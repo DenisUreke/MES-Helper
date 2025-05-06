@@ -1,0 +1,28 @@
+<div class="form-container">
+    <h3>Find Tables with Two Specific Columns</h3>
+    <div class="explanation-box">
+        <p>{{ description }}</p>
+    </div>
+
+    <form [formGroup]="columnForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="column1">First Column Name:</label>
+            <input id="column1" type="text" formControlName="column1" class="form-control" placeholder="e.g. userId">
+            <div *ngIf="columnForm.get('column1')?.invalid && columnForm.get('column1')?.touched" class="error-message">
+                Column name is required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="column2">Second Column Name:</label>
+            <input id="column2" type="text" formControlName="column2" class="form-control" placeholder="e.g. orderId">
+            <div *ngIf="columnForm.get('column2')?.invalid && columnForm.get('column2')?.touched" class="error-message">
+                Column name is required
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="columnForm.invalid" class="submit-button">
+            Generate SQL
+        </button>
+    </form>
+</div>

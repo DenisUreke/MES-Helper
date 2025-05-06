@@ -1,0 +1,28 @@
+<div class="form-container">
+    <h3>Find Tables by Column and Data Type</h3>
+    <div class="explanation-box">
+        <p>{{ description }}</p>
+    </div>
+
+    <form [formGroup]="columnTypeForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="columnName">Column Name:</label>
+            <input id="columnName" type="text" formControlName="columnName" class="form-control" placeholder="e.g. userId">
+            <div *ngIf="columnTypeForm.get('columnName')?.invalid && columnTypeForm.get('columnName')?.touched" class="error-message">
+                Column name is required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dataType">Data Type:</label>
+            <input id="dataType" type="text" formControlName="dataType" class="form-control" placeholder="e.g. int, varchar, datetime">
+            <div *ngIf="columnTypeForm.get('dataType')?.invalid && columnTypeForm.get('dataType')?.touched" class="error-message">
+                Data type is required
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="columnTypeForm.invalid" class="submit-button">
+            Generate SQL
+        </button>
+    </form>
+</div>

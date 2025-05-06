@@ -1,0 +1,20 @@
+<div class="form-container">
+    <h3>Find Tables by Column Pattern</h3>
+    <div class="explanation-box">
+        <p>{{ description }}</p>
+    </div>
+
+    <form [formGroup]="patternForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="pattern">Column Name Pattern:</label>
+            <input id="pattern" type="text" formControlName="pattern" class="form-control" placeholder="e.g. Order">
+            <div *ngIf="patternForm.get('pattern')?.invalid && patternForm.get('pattern')?.touched" class="error-message">
+                Pattern is required
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="patternForm.invalid" class="submit-button">
+            Generate SQL
+        </button>
+    </form>
+</div>

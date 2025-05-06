@@ -1,0 +1,22 @@
+<div class="main-parent-container">
+
+  <app-mes-header></app-mes-header>
+  <div class="parent-container">
+    <app-drop-down></app-drop-down>
+    
+    <!-- Show component based on selection -->
+    <ng-container [ngSwitch]="currentFormId">
+      <app-table-with-same-columns-1 *ngSwitchCase="'tablesByColumnName'"></app-table-with-same-columns-1>
+      <app-table-with-same-columns-2 *ngSwitchCase="'tablesWithTwoColumns'"></app-table-with-same-columns-2>
+      <!-- Temporarily show another component for columnDataType until you implement it -->
+      <app-table-by-column-and-datatype *ngSwitchCase="'columnDataType'"></app-table-by-column-and-datatype>
+      <app-table-with-column-pattern *ngSwitchCase="'columnPattern'"></app-table-with-column-pattern>
+
+      <app-table-with-same-columns-1 *ngSwitchDefault></app-table-with-same-columns-1>
+    </ng-container>
+    
+    <app-sql-window></app-sql-window>
+  </div>
+</div>
+
+<router-outlet />

@@ -1,0 +1,12 @@
+.header-container {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .mes-logo {
+    height: 15vh;
+    margin-right: 1rem;
+    z-index: 100;
+  }

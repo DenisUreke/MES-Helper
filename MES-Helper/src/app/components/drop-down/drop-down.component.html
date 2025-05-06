@@ -1,0 +1,18 @@
+<div class="dropdown-container">
+    <label for="formSelect">Select Query Type:</label>
+    <select 
+      id="formSelect" 
+      [(ngModel)]="selectedFormId"
+      (change)="onSelectionChange()"
+      class="form-select">
+      <option 
+        *ngFor="let option of formOptions" 
+        [value]="option.id">
+        {{ option.name }}
+      </option>
+    </select>
+    
+    <div class="selected-description" *ngIf="selectedDescription">
+      {{ selectedDescription }}
+    </div>
+  </div>

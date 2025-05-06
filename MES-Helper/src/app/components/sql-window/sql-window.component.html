@@ -1,0 +1,19 @@
+<div class="sql-window-container">
+    <div class="sql-window-header">
+      <h3>Generated SQL</h3>
+      <button 
+        *ngIf="sqlQuery" 
+        class="copy-button" 
+        (click)="copyToClipboard()" 
+        [ngClass]="{'copied': isCopied}">
+        {{ isCopied ? 'Copied!' : 'Copy SQL' }}
+      </button>
+    </div>
+    
+    <div class="sql-display" [ngClass]="{'empty': !sqlQuery}">
+      <pre *ngIf="sqlQuery">{{ sqlQuery }}</pre>
+      <div *ngIf="!sqlQuery" class="empty-message">
+        <span>No SQL generated yet. Use the form to create a query.</span>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,20 @@
+<div class="form-container">
+    <h3>Find Tables with Specific Column</h3>
+    <div class="explanation-box">
+        <p>{{ description }}</p>
+    </div>
+
+    <form [formGroup]="columnForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="columnName">Column Name:</label>
+            <input id="columnName" type="text" formControlName="columnName" class="form-control" placeholder="e.g. userId">
+            <div *ngIf="columnForm.get('columnName')?.invalid && columnForm.get('columnName')?.touched" class="error-message">
+                Column name is required
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="columnForm.invalid" class="submit-button">
+            Generate SQL
+        </button>
+    </form>
+</div>
