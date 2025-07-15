@@ -14,6 +14,7 @@ import {ProceduresReferencingFormComponent} from './components/procedures-refere
 import { ProceduresUsingColumnFormComponent } from './components/procedures-using-column-form/procedures-using-column-form.component';
 import { RecentProceduresFormComponent } from './components/recent-procedures-form/recent-procedures-form.component';
 import { ObjectsUsingEntityFormComponent } from './components/objects-using-entity-form/objects-using-entity-form.component';
+import { XmlParserModalComponent } from './components/xml-parser-modal/xml-parser-modal.component';
 import { SqlWindowComponent } from './components/sql-window/sql-window.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { MesHeaderComponent } from './components/mes-header/mes-header.component';
@@ -39,7 +40,8 @@ import { DropDownBarService } from './services/drop-down-bar.service';
     ProceduresReferencingFormComponent,
     ProceduresUsingColumnFormComponent,
     RecentProceduresFormComponent,
-    ObjectsUsingEntityFormComponent
+    ObjectsUsingEntityFormComponent,
+    XmlParserModalComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -47,6 +49,7 @@ import { DropDownBarService } from './services/drop-down-bar.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'MES-Helper';
   currentFormId: string = '';
+  showXmlParser = false;
   private subscription: Subscription | null = null;
   
   constructor(private dropdownService: DropDownBarService) {}

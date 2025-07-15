@@ -1,5 +1,15 @@
 <div class="main-parent-container">
 
+<button (click)="showXmlParser = true" class="tool-button">
+  Parse XML to Text
+</button>
+
+<app-xml-parser-modal 
+  *ngIf="showXmlParser" 
+  (close)="showXmlParser = false">
+</app-xml-parser-modal>
+
+
   <app-mes-header></app-mes-header>
   <div class="parent-container">
     <app-drop-down></app-drop-down>
@@ -30,5 +40,6 @@
     <app-sql-window></app-sql-window>
   </div>
 </div>
+
 
 <router-outlet />
