@@ -137,4 +137,37 @@ button:hover {
   box-shadow: 0 0 10px rgba(58, 147, 230, 0.4);
 }
 
+.modal.comparing {
+  width: 90vw;
+  max-width: 95vw;
+  height: 85vh;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+}
+
+.input-container.side-by-side {
+  flex-direction: row;
+  gap: 1vw;
+}
+
+.input-container textarea {
+  width: 100%;
+}
+
+.comparison-view {
+  display: flex;
+  gap: 1vw;
+  margin-top: 2vh;
+}
+
+.comparison-view .text-output {
+  width: 100%;
+  max-height: 60vh;
+}
+
+
 

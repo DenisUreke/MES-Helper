@@ -1,0 +1,3 @@
+ng build --configuration production
+
+npx angular-cli-ghpages --dir=dist/mes-helper/browser

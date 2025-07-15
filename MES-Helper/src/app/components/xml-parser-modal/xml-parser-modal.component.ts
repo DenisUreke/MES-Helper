@@ -6,40 +6,48 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-xml-parser-modal',
   standalone: true,
-  encapsulation: ViewEncapsulation.None,
   imports: [CommonModule, FormsModule],
   templateUrl: './xml-parser-modal.component.html',
-  styleUrl: './xml-parser-modal.component.css'
+  styleUrl: './xml-parser-modal.component.css',
+   encapsulation: ViewEncapsulation.None
 })
 export class XmlParserModalComponent {
   @Output() close = new EventEmitter<void>();
-  xmlInput: string = '';
-  parsedHtml!: SafeHtml;
 
+  xmlInput1: string = '';
+  xmlInput2: string = '';
+  parsedHtml1: SafeHtml | null = null;
+  parsedHtml2: SafeHtml | null = null;
+  showSecondInput = false;
   error: string = '';
 
   constructor(private sanitizer: DomSanitizer) {}
 
-
-convertXmlToTextFormat(): void {
-  try {
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(this.xmlInput, 'text/xml');
-    const obj = this.xmlToJson(xml);
-    const htmlLines = this.flattenToLines(obj);
-    this.parsedHtml = this.sanitizer.bypassSecurityTrustHtml(htmlLines.join('\n'));
-    this.error = '';
-  } catch (e) {
-    this.error = 'Failed to parse XML.';
-    this.parsedHtml = '';
+  convertXml1(): void {
+    this.parsedHtml1 = this.parseXml(this.xmlInput1);
   }
-}
 
+  convertXml2(): void {
+    this.parsedHtml2 = this.parseXml(this.xmlInput2);
+  }
+
+  private parseXml(xmlString: string): SafeHtml | null {
+    try {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlString, 'text/xml');
+      const obj = this.xmlToJson(xml);
+      const htmlLines = this.flattenToLines(obj);
+      this.error = '';
+      return this.sanitizer.bypassSecurityTrustHtml(htmlLines.join('\n'));
+    } catch {
+      this.error = 'Failed to parse XML.';
+      return null;
+    }
+  }
 
   private xmlToJson(xml: Node): any {
     const obj: any = {};
     if (xml.nodeType === 1 && xml instanceof Element) {
-      // Attributes
       if (xml.attributes.length > 0) {
         for (let j = 0; j < xml.attributes.length; j++) {
           const attribute = xml.attributes.item(j);

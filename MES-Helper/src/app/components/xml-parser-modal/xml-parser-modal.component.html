@@ -1,23 +1,43 @@
 <div class="modal-overlay">
-  <div class="modal">
+  <div class="modal comparing">
     <div class="modal-header">
       <h3>Parsed XML View</h3>
       <button class="close-button" (click)="close.emit()">Close</button>
     </div>
 
-    <textarea 
-      *ngIf="!parsedHtml" 
-      [(ngModel)]="xmlInput" 
-      placeholder="Paste your XML here..." 
-      rows="10">
-    </textarea>
+    <!-- First XML input -->
+    <div class="input-container side-by-side" *ngIf="!parsedHtml1">
+      <textarea [(ngModel)]="xmlInput1" placeholder="Paste your XML here..."></textarea>
+    </div>
 
-    <div class="actions">
-      <button (click)="convertXmlToTextFormat()" *ngIf="!parsedHtml">Convert</button>
+    <div class="actions" *ngIf="!parsedHtml1">
+      <button (click)="convertXml1()">Convert</button>
+    </div>
+
+    <!-- After first parse: show parsedHtml1 and Compare button -->
+    <div class="comparison-view" *ngIf="parsedHtml1 && !showSecondInput">
+      <pre class="text-output" [innerHTML]="parsedHtml1"></pre>
+    </div>
+
+    <div class="actions" *ngIf="parsedHtml1 && !showSecondInput">
+      <button (click)="showSecondInput = true">Compare</button>
+    </div>
+
+    <!-- Second XML input -->
+    <div class="input-container side-by-side" *ngIf="showSecondInput && !parsedHtml2">
+      <textarea [(ngModel)]="xmlInput2" placeholder="Paste second XML here..."></textarea>
+    </div>
+
+    <div class="actions" *ngIf="showSecondInput && !parsedHtml2">
+      <button (click)="convertXml2()">Convert Second</button>
+    </div>
+
+    <!-- Comparison -->
+    <div class="comparison-view" *ngIf="parsedHtml1 && parsedHtml2">
+      <pre class="text-output" [innerHTML]="parsedHtml1"></pre>
+      <pre class="text-output" [innerHTML]="parsedHtml2"></pre>
     </div>
 
     <div *ngIf="error" class="error">{{ error }}</div>
-
-    <pre class="text-output" *ngIf="parsedHtml" [innerHTML]="parsedHtml"></pre>
   </div>
 </div>
