@@ -49,7 +49,6 @@ textarea {
   resize: vertical;
   min-height: 30vh;
   max-height: 45vh;
-  margin-top: 1vh;
 }
 
 textarea:focus {
@@ -112,4 +111,30 @@ button:hover {
   margin-top: 10px;
   font-style: italic;
 }
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1vh;
+}
+
+.close-button {
+  background-color: #2d7fcc;
+  color: white;
+  border: none;
+  padding: 0.5vh 1.5vh;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.close-button:hover {
+  background-color: #3a93e6;
+  box-shadow: 0 0 10px rgba(58, 147, 230, 0.4);
+}
+
 

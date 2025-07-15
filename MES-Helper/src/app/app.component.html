@@ -1,19 +1,22 @@
 <div class="main-parent-container">
 
-<button (click)="showXmlParser = true" class="tool-button">
-  Parse XML to Text
-</button>
-
-<app-xml-parser-modal 
-  *ngIf="showXmlParser" 
-  (close)="showXmlParser = false">
-</app-xml-parser-modal>
 
 
   <app-mes-header></app-mes-header>
+
+
+  <div class="parent-container_2">
+    <button (click)="showXmlParser = true" class="tool-button">
+      Parse XML to Text
+    </button>
+
+    <app-xml-parser-modal *ngIf="showXmlParser" (close)="showXmlParser = false">
+    </app-xml-parser-modal>
+  </div>
+
   <div class="parent-container">
     <app-drop-down></app-drop-down>
-    
+
     <!-- Show component based on selection -->
     <ng-container [ngSwitch]="currentFormId">
       <app-table-with-same-columns-1 *ngSwitchCase="'tablesByColumnName'"></app-table-with-same-columns-1>
@@ -23,20 +26,15 @@
       <app-table-with-column-pattern *ngSwitchCase="'columnPattern'"></app-table-with-column-pattern>
       <app-referenced-entities-form *ngSwitchCase="'referencedEntities'"></app-referenced-entities-form>
       <app-variable-usage-form *ngSwitchCase="'variableUsage'"></app-variable-usage-form>
-      <app-procedures-referencing-form *ngSwitchCase="'proceduresReferencingProcedure'"></app-procedures-referencing-form>
+      <app-procedures-referencing-form
+        *ngSwitchCase="'proceduresReferencingProcedure'"></app-procedures-referencing-form>
       <app-procedures-using-column-form *ngSwitchCase="'proceduresUsingColumn'"></app-procedures-using-column-form>
       <app-recent-procedures-form *ngSwitchCase="'recentProcedures'"></app-recent-procedures-form>
       <app-objects-using-entity-form *ngSwitchCase="'objectsUsingEntity'"></app-objects-using-entity-form>
 
-
-
-
-
-
-
       <app-table-with-same-columns-1 *ngSwitchDefault></app-table-with-same-columns-1>
     </ng-container>
-    
+
     <app-sql-window></app-sql-window>
   </div>
 </div>

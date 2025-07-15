@@ -1,8 +1,10 @@
 <div class="modal-overlay">
   <div class="modal">
-    <h3>Parsed XML View</h3>
+    <div class="modal-header">
+      <h3>Parsed XML View</h3>
+      <button class="close-button" (click)="close.emit()">Close</button>
+    </div>
 
-    <!-- Only show textarea BEFORE conversion -->
     <textarea 
       *ngIf="!parsedHtml" 
       [(ngModel)]="xmlInput" 
@@ -12,12 +14,10 @@
 
     <div class="actions">
       <button (click)="convertXmlToTextFormat()" *ngIf="!parsedHtml">Convert</button>
-      <button (click)="close.emit()">Close</button>
     </div>
 
     <div *ngIf="error" class="error">{{ error }}</div>
 
-    <!-- Show the parsed result AFTER conversion -->
     <pre class="text-output" *ngIf="parsedHtml" [innerHTML]="parsedHtml"></pre>
   </div>
 </div>
