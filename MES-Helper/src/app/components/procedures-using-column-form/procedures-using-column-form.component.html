@@ -1,0 +1,27 @@
+<div class="form-container">
+  <h3>Find Procedures Using Column Name</h3>
+  <div class="explanation-box">
+    <p>{{ description }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="columnName">Column Name:</label>
+      <input
+        id="columnName"
+        type="text"
+        formControlName="columnName"
+        class="form-control"
+        placeholder="e.g. CreatedDate"
+      />
+      <div *ngIf="form.get('columnName')?.invalid && form.get('columnName')?.touched" class="error-message">
+        Column name is required
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid" class="submit-button">
+      Generate SQL
+    </button>
+  </form>
+</div>
+

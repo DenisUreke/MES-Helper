@@ -65,11 +65,11 @@ ORDER BY s.name, t.name;`;
     }
 
     const sql = `SELECT s.name AS SchemaName, t.name AS TableName
-FROM sys.columns c
-JOIN sys.tables t ON c.object_id = t.object_id
-JOIN sys.schemas s ON t.schema_id = s.schema_id
-WHERE c.name = '${columnName}'
-ORDER BY s.name, t.name;`;
+  FROM sys.columns c
+  JOIN sys.tables t ON c.object_id = t.object_id
+  JOIN sys.schemas s ON t.schema_id = s.schema_id
+  WHERE c.name = '${columnName}'
+  ORDER BY s.name, t.name;`;
 
     return sql;
   }
@@ -88,4 +88,76 @@ ORDER BY s.name, t.name;`;
 
     return sql;
   }
+
+  findReferencedEntities(procedureName: string): string {
+    if (!procedureName) return '';
+
+    const sql = `SELECT 
+    dre.referenced_schema_name,
+    dre.referenced_entity_name,
+    dre.referenced_minor_name,
+    dre.is_ambiguous,
+    o.type_desc AS referenced_entity_type
+    FROM sys.dm_sql_referenced_entities('${procedureName}', 'OBJECT') AS dre
+    LEFT JOIN sys.objects AS o
+    ON OBJECT_ID(QUOTENAME(dre.referenced_schema_name) + '.' + QUOTENAME(dre.referenced_entity_name)) = o.object_id;`.trim();
+
+    return sql;
+  }
+
+  findProceduresByVariable(variableName: string): string {
+    if (!variableName) return '';
+
+    const sql = `SELECT OBJECT_NAME(sm.object_id) AS procedure_name, sm.definition
+    FROM sys.sql_modules AS sm
+    JOIN sys.objects AS o ON sm.object_id = o.object_id
+    WHERE sm.definition LIKE '%${variableName}%';`.trim();
+
+    return sql;
+  }
+
+  findProceduresReferencingProcedure(procedureName: string): string {
+    if (!procedureName) return '';
+
+    const sql = `SELECT OBJECT_NAME(object_id) AS procedure_name 
+    FROM sys.sql_modules
+    WHERE definition LIKE '%${procedureName}%'
+    AND OBJECTPROPERTY(object_id, 'IsProcedure') = 1;`.trim();
+
+    return sql;
+  }
+
+  findProceduresByColumnName(columnName: string): string {
+    if (!columnName) return '';
+
+    const sql = `SELECT OBJECT_NAME(sm.object_id) AS procedure_name 
+    FROM sys.sql_modules sm
+    JOIN sys.objects o ON sm.object_id = o.object_id
+    WHERE sm.definition LIKE '%${columnName}%'
+    AND o.type = 'P';`.trim();
+
+    return sql;
+  }
+
+  findRecentlyModifiedProcedures(daysBack: number): string {
+    if (!daysBack || daysBack < 0) return '';
+
+    return `SELECT name, modify_date
+    FROM sys.procedures
+    WHERE DATEDIFF(DAY, modify_date, GETDATE()) <= ${daysBack};`.trim();
+  }
+
+  findObjectsUsingEntity(entityName: string): string {
+  if (!entityName) return '';
+
+  return `SELECT 
+    OBJECT_NAME(referencing_id) AS referencing_object,
+    referenced_entity_name
+    FROM sys.sql_expression_dependencies
+    WHERE referenced_entity_name = '${entityName}';`.trim();
+}
+
+
+
+
 }

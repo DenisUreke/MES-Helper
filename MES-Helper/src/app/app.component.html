@@ -11,6 +11,18 @@
       <!-- Temporarily show another component for columnDataType until you implement it -->
       <app-table-by-column-and-datatype *ngSwitchCase="'columnDataType'"></app-table-by-column-and-datatype>
       <app-table-with-column-pattern *ngSwitchCase="'columnPattern'"></app-table-with-column-pattern>
+      <app-referenced-entities-form *ngSwitchCase="'referencedEntities'"></app-referenced-entities-form>
+      <app-variable-usage-form *ngSwitchCase="'variableUsage'"></app-variable-usage-form>
+      <app-procedures-referencing-form *ngSwitchCase="'proceduresReferencingProcedure'"></app-procedures-referencing-form>
+      <app-procedures-using-column-form *ngSwitchCase="'proceduresUsingColumn'"></app-procedures-using-column-form>
+      <app-recent-procedures-form *ngSwitchCase="'recentProcedures'"></app-recent-procedures-form>
+      <app-objects-using-entity-form *ngSwitchCase="'objectsUsingEntity'"></app-objects-using-entity-form>
+
+
+
+
+
+
 
       <app-table-with-same-columns-1 *ngSwitchDefault></app-table-with-same-columns-1>
     </ng-container>

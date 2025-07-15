@@ -1,0 +1,26 @@
+<div class="form-container">
+  <h3>Find Procedures Referencing Another Procedure</h3>
+  <div class="explanation-box">
+    <p>{{ description }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="procedureName">Procedure Name:</label>
+      <input
+        id="procedureName"
+        type="text"
+        formControlName="procedureName"
+        class="form-control"
+        placeholder="e.g. GetOrders"
+      />
+      <div *ngIf="form.get('procedureName')?.invalid && form.get('procedureName')?.touched" class="error-message">
+        Procedure name is required
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid" class="submit-button">
+      Generate SQL
+    </button>
+  </form>
+</div>

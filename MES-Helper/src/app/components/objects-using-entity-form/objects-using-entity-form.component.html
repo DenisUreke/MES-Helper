@@ -1,0 +1,26 @@
+<div class="form-container">
+  <h3>Find Objects Using a Table or Procedure</h3>
+  <div class="explanation-box">
+    <p>{{ description }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="entityName">Table or Procedure Name:</label>
+      <input
+        id="entityName"
+        type="text"
+        formControlName="entityName"
+        class="form-control"
+        placeholder="e.g. Orders or GetOrders"
+      />
+      <div *ngIf="form.get('entityName')?.invalid && form.get('entityName')?.touched" class="error-message">
+        Name is required
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid" class="submit-button">
+      Generate SQL
+    </button>
+  </form>
+</div>

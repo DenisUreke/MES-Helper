@@ -8,6 +8,12 @@ import { TableWithSameColumns1Component } from './components/table-with-same-col
 import { TableWithSameColumns2Component } from './components/table-with-same-columns-2/table-with-same-columns-2.component';
 import { TableWithColumnPatternComponent } from './components/table-with-column-pattern/table-with-column-pattern.component';
 import { TableByColumnAndDatatypeComponent } from './components/table-by-column-and-datatype/table-by-column-and-datatype.component';
+import { ReferencedEntitiesFormComponent } from './components/referenced-enteties-form/referenced-enteties-form.component';
+import { VariableUsageFormComponent } from './components/variable-usage-form/variable-usage-form.component';
+import {ProceduresReferencingFormComponent} from './components/procedures-referencing-form/procedures-referencing-form.component';
+import { ProceduresUsingColumnFormComponent } from './components/procedures-using-column-form/procedures-using-column-form.component';
+import { RecentProceduresFormComponent } from './components/recent-procedures-form/recent-procedures-form.component';
+import { ObjectsUsingEntityFormComponent } from './components/objects-using-entity-form/objects-using-entity-form.component';
 import { SqlWindowComponent } from './components/sql-window/sql-window.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { MesHeaderComponent } from './components/mes-header/mes-header.component';
@@ -27,7 +33,13 @@ import { DropDownBarService } from './services/drop-down-bar.service';
     DropDownComponent,
     MesHeaderComponent,
     TableWithColumnPatternComponent,
-    TableByColumnAndDatatypeComponent
+    TableByColumnAndDatatypeComponent,
+    ReferencedEntitiesFormComponent,
+    VariableUsageFormComponent,
+    ProceduresReferencingFormComponent,
+    ProceduresUsingColumnFormComponent,
+    RecentProceduresFormComponent,
+    ObjectsUsingEntityFormComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

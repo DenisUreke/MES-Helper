@@ -1,0 +1,27 @@
+<div class="form-container">
+  <h3>Find Recently Modified Procedures</h3>
+  <div class="explanation-box">
+    <p>{{ description }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="daysBack">Modified in the last (days):</label>
+      <input
+        id="daysBack"
+        type="number"
+        formControlName="daysBack"
+        class="form-control"
+        placeholder="e.g. 30"
+        min="1"
+      />
+      <div *ngIf="form.get('daysBack')?.invalid && form.get('daysBack')?.touched" class="error-message">
+        Please enter a valid number of days (at least 1).
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid" class="submit-button">
+      Generate SQL
+    </button>
+  </form>
+</div>

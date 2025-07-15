@@ -1,0 +1,26 @@
+<div class="form-container">
+  <h3>Find Procedures by Variable Usage</h3>
+  <div class="explanation-box">
+    <p>{{ description }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="variableName">Variable Name:</label>
+      <input
+        id="variableName"
+        type="text"
+        formControlName="variableName"
+        class="form-control"
+        placeholder="e.g. @UserId"
+      />
+      <div *ngIf="form.get('variableName')?.invalid && form.get('variableName')?.touched" class="error-message">
+        Variable name is required
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid" class="submit-button">
+      Generate SQL
+    </button>
+  </form>
+</div>
