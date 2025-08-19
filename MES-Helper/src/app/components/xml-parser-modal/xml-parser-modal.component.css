@@ -169,5 +169,17 @@ button:hover {
   max-height: 60vh;
 }
 
+/* NEW: diff highlight styles */
+.diff.diff-added {
+  background-color: rgba(76, 175, 80, 0.18);
+  border-left: 3px solid #4caf50;
+  padding-left: 6px;
+  border-radius: 2px;
+}
 
-
+.diff.diff-changed {
+  background-color: rgba(255, 152, 0, 0.18);
+  border-left: 3px solid #ff9800;
+  padding-left: 6px;
+  border-radius: 2px;
+}

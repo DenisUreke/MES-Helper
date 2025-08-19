@@ -33,9 +33,15 @@
     </div>
 
     <!-- Comparison -->
+    <div class="actions" *ngIf="parsedHtml1 && parsedHtml2">
+      <button (click)="toggleDiff()">
+        {{ showDiff ? 'Hide differences' : 'Highlight differences' }}
+      </button>
+    </div>
+
     <div class="comparison-view" *ngIf="parsedHtml1 && parsedHtml2">
       <pre class="text-output" [innerHTML]="parsedHtml1"></pre>
-      <pre class="text-output" [innerHTML]="parsedHtml2"></pre>
+      <pre class="text-output" [innerHTML]="showDiff ? diffHtml2 : parsedHtml2"></pre>
     </div>
 
     <div *ngIf="error" class="error">{{ error }}</div>
