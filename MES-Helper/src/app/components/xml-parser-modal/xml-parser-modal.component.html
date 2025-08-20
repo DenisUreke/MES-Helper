@@ -32,15 +32,16 @@
       <button (click)="convertXml2()">Convert Second</button>
     </div>
 
-    <!-- Comparison -->
+    <!-- Actions for diff -->
     <div class="actions" *ngIf="parsedHtml1 && parsedHtml2">
       <button (click)="toggleDiff()">
         {{ showDiff ? 'Hide differences' : 'Highlight differences' }}
       </button>
     </div>
 
+    <!-- Comparison -->
     <div class="comparison-view" *ngIf="parsedHtml1 && parsedHtml2">
-      <pre class="text-output" [innerHTML]="parsedHtml1"></pre>
+      <pre class="text-output" [innerHTML]="showDiff ? diffHtml1 : parsedHtml1"></pre>
       <pre class="text-output" [innerHTML]="showDiff ? diffHtml2 : parsedHtml2"></pre>
     </div>
 

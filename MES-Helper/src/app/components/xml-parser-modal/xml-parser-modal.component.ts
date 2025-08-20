@@ -23,7 +23,8 @@ export class XmlParserModalComponent {
   // Parsed objects and diff state
   parsedObj1: any = null;
   parsedObj2: any = null;
-  diffHtml2: SafeHtml | null = null;
+  diffHtml1: SafeHtml | null = null; // LEFT diff html
+  diffHtml2: SafeHtml | null = null; // RIGHT diff html
 
   showSecondInput = false;
   showDiff = false;
@@ -63,16 +64,19 @@ export class XmlParserModalComponent {
 
     // Reset diff when right changes
     this.showDiff = false;
+    this.diffHtml1 = null;
     this.diffHtml2 = null;
   }
 
-  // Toggle diff highlighting on RIGHT vs LEFT
+  // Toggle diff highlighting on BOTH sides
   toggleDiff(): void {
     if (!this.parsedObj1 || !this.parsedObj2) return;
     this.showDiff = !this.showDiff;
     if (this.showDiff) {
-      const diffLines = this.diffFlatten(this.parsedObj1, this.parsedObj2);
-      this.diffHtml2 = this.sanitizer.bypassSecurityTrustHtml(diffLines.join('\n'));
+      const leftLines  = this.diffFlattenLeft(this.parsedObj1, this.parsedObj2);
+      const rightLines = this.diffFlatten(this.parsedObj1, this.parsedObj2);
+      this.diffHtml1 = this.sanitizer.bypassSecurityTrustHtml(leftLines.join('\n'));
+      this.diffHtml2 = this.sanitizer.bypassSecurityTrustHtml(rightLines.join('\n'));
     }
   }
 
@@ -98,7 +102,6 @@ export class XmlParserModalComponent {
 
   // Safer XML→JSON: only return raw text for true leaf nodes
   private xmlToJson(xml: Node): any {
-    // Element node
     if (xml.nodeType === 1 && xml instanceof Element) {
       const obj: any = {};
 
@@ -110,7 +113,7 @@ export class XmlParserModalComponent {
         }
       }
 
-      // has any element children?
+      // has element children?
       let hasElementChildren = false;
       for (let i = 0; i < xml.childNodes.length; i++) {
         const n = xml.childNodes.item(i)!;
@@ -151,7 +154,6 @@ export class XmlParserModalComponent {
       return trimmed || '';
     }
 
-    // Text node
     if (xml.nodeType === 3) {
       return (xml.textContent ?? '').trim();
     }
@@ -215,12 +217,11 @@ export class XmlParserModalComponent {
     return true;
   }
 
-  // Diff-aware flattener: render RIGHT with highlights vs LEFT (no "item" labels)
+  // RIGHT-side diff: highlights added/changed vs LEFT
   private diffFlatten(left: any, right: any, indent: number = 0, keyLabel?: string): string[] {
     const lines: string[] = [];
     const spacing = '  '.repeat(indent);
 
-    // Primitive/null on right
     if (typeof right !== 'object' || right === null) {
       const changed = !this.isEqual(left, right);
       const cls = changed ? 'diff diff-changed' : '';
@@ -230,7 +231,6 @@ export class XmlParserModalComponent {
       return lines;
     }
 
-    // Top-level array on right (no labels)
     if (Array.isArray(right)) {
       const leftArr = Array.isArray(left) ? left : [];
       right.forEach((rItem, i) => {
@@ -240,7 +240,6 @@ export class XmlParserModalComponent {
       return lines;
     }
 
-    // Object on right
     const rightKeys = Object.keys(right);
     for (const k of rightKeys) {
       const rVal = right[k];
@@ -265,6 +264,61 @@ export class XmlParserModalComponent {
         const cls = subtreeChanged ? (added ? 'diff diff-added' : 'diff diff-changed') : '';
         lines.push(`${spacing}<span class="key ${cls}">${k}</span>:`);
         lines.push(...this.diffFlatten(lVal, rVal, indent + 1));
+      }
+    }
+
+    return lines;
+  }
+
+  // LEFT-side diff: highlights removed/changed vs RIGHT
+  private diffFlattenLeft(left: any, right: any, indent: number = 0, keyLabel?: string): string[] {
+    const lines: string[] = [];
+    const spacing = '  '.repeat(indent);
+
+    if (typeof left !== 'object' || left === null) {
+      const missingOnRight = typeof right === 'undefined';
+      const changed = !missingOnRight && !this.isEqual(left, right);
+      const cls = missingOnRight ? 'diff diff-removed' : (changed ? 'diff diff-changed' : '');
+      const safeVal = (left === null ? 'null' : left);
+      const label = keyLabel ?? 'value';
+      lines.push(`${spacing}<span class="key ${cls}">${label}</span>: <span class="value ${cls}">${safeVal}</span>`);
+      return lines;
+    }
+
+    if (Array.isArray(left)) {
+      const rightArr = Array.isArray(right) ? right : [];
+      left.forEach((lItem, i) => {
+        const rItem = i < rightArr.length ? rightArr[i] : undefined;
+        lines.push(...this.diffFlattenLeft(lItem, rItem, indent));
+      });
+      return lines;
+    }
+
+    const leftKeys = Object.keys(left);
+    for (const k of leftKeys) {
+      const lVal = left[k];
+      const rVal = (right && typeof right === 'object') ? right[k] : undefined;
+
+      const removed = typeof rVal === 'undefined';
+
+      if (typeof lVal !== 'object' || lVal === null) {
+        const changed = !removed && !this.isEqual(lVal, rVal);
+        const cls = removed ? 'diff diff-removed' : (changed ? 'diff diff-changed' : '');
+        const safeVal = (lVal === null ? 'null' : lVal);
+        lines.push(`${spacing}<span class="key ${cls}">${k}</span>: <span class="value ${cls}">${safeVal}</span>`);
+      } else if (Array.isArray(lVal)) {
+        const rArr = Array.isArray(rVal) ? rVal : [];
+        const headerCls = removed ? 'diff diff-removed' : '';
+        lines.push(`${spacing}<span class="key ${headerCls}">${k}</span>:`);
+        lVal.forEach((lItem, i) => {
+          const rItem = i < rArr.length ? rArr[i] : undefined;
+          lines.push(...this.diffFlattenLeft(lItem, rItem, indent + 1));
+        });
+      } else {
+        const subtreeChanged = removed || !this.isEqual(lVal, rVal);
+        const cls = subtreeChanged ? (removed ? 'diff diff-removed' : 'diff diff-changed') : '';
+        lines.push(`${spacing}<span class="key ${cls}">${k}</span>:`);
+        lines.push(...this.diffFlattenLeft(lVal, rVal, indent + 1));
       }
     }
 
